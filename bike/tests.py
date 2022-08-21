@@ -21,12 +21,12 @@ class BikeTest(APITestCase):
         )
         test_user1.save()
 
-        test_game = Bike.objects.create(
+        test_bike = Bike.objects.create(
             name="test_bike",
             purchaser=test_user1,
             desc="testing bike.",
         )
-        test_game.save()
+        test_bike.save()
 
     def setUp(self):
         self.client.login(username='test_user1', password="pass")
@@ -45,7 +45,7 @@ class BikeTest(APITestCase):
     def test_get_bike_list(self):
         url = reverse("bike_list")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         bike = response.data
         self.assertEqual(len(bike), 1)
         self.assertEqual(bike[0]["name"], "test_bike")
@@ -54,7 +54,7 @@ class BikeTest(APITestCase):
         self.client.logout()
         url = reverse("bike_list")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_only_purchaser_can_delete(self):
         self.client.logout()
